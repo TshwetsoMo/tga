@@ -1,0 +1,84 @@
+/* Global Styles */
+
+body {
+    background-color: rgba(202, 223, 244, 1); /* background color */
+    font-family: Arial, sans-serif;
+  }
+  
+  .techgenius-academy-unlock-your-potential-empower-your-future {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: rgba(0, 105, 217, 1); /* logos, headings, and subheadings */
+  }
+  
+  .techgenius-academy-unlock-your-potential-empower-your-future span {
+    font-family: Orbitron, sans-serif;
+    font-weight: 900;
+  }
+  
+  /* Card Styles */
+  
+  .card {
+    border: 1px solid rgba(255, 193, 7, 0.8); /* outlines and details shadow overlays */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    color: rgba(0, 105, 217, 1); /* logos, headings, and subheadings */
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Form Styles */
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-control {
+    border: 1px solid rgba(255, 193, 7, 0.8); /* outlines and details shadow overlays */
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .form-control:focus {
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
+  }
+  
+  .btn-primary {
+    background-color: rgba(0, 105, 217, 1); /* logos, headings, and subheadings */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background-color: rgba(0, 105, 217, 0.8);
+  }
+  
+  .dont-have-an-account-register {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .dont-have-an-account-register span {
+    color: rgba(0, 123, 255, 1);
+  }
+  
+  .dont-have-an-account-register a {
+    text-decoration: none;
+    color: rgba(0, 123, 255, 1);
+  }
+  
+  .dont-have-an-account-register a:hover {
+    text-decoration: underline;
+  }
