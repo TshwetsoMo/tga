@@ -200,7 +200,7 @@ stipulate functionality and improvements that can be implemented in the future.
 ![image5](./images/admin3.png)
 ![image6](./images/admin%20addAnnouncement.png)
 ![image7](./images/login%20page.png)
-![image8](./images/admin%20addAnnouncement.png)
+![image8](./images/admin%20addTeacher.png)
 ![image9](./images/student1.png)
 ![image10](./images/teacher1.png)
 <br>
