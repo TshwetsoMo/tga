@@ -2,7 +2,6 @@
 // Start the session
 session_start();
 
-// config.php
 // Database connection settings
 $db_host = 'localhost';
 $db_username = 'root';
@@ -34,9 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User found, create a session and redirect to home page
         $_SESSION['role'] = $role;
         $_SESSION['email'] = $email;
-        // Add debug statement to check session variables
-        echo "Session variables set:<br>";
-        var_dump($_SESSION);
 
         if ($role == 'admin') {
             // Retrieve the admin's ID from the database
@@ -62,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         header('Location: ' . $role . 'home.php');
-    exit;
+        exit;
     } else {
         // Invalid credentials, display error message
         $error = "Invalid email or password";
@@ -72,123 +68,237 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags and title -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="login.css">
-    <title>Document</title>
+    <title>TechGenius Academy Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
         body {
-            background-color: rgba(202, 223, 244, 1);
+            background-color: #f2f2f2;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+        /* Spinner Styles */
+        #spinner {
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        #spinner.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        #spinner.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .header-banner {
+            width: 100%;
+            height: 120px;
+            text-align: center;
+            background-color: #0069d9;
+            color: #fff;
+            padding: 20px 0;
+        }
+        .header-banner span {
+            display: block;
+        }
+        .header-banner .title {
+            font-size: 36px;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .header-banner .subtitle {
+            font-size: 24px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .login-container {
+            margin-top: 50px;
+        }
+        .login-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .login-img {
+            background-image: url('img/about.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+        }
+        .login-form {
+            padding: 30px;
+            background-color: #fff;
+            height: 100%;
+        }
+        .login-form h4 {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .login-form .form-control {
+            border-radius: 20px;
+        }
+        .btn-login {
+            border-radius: 20px;
+            background-color: #0069d9;
+            border: none;
+        }
+        .btn-login:hover {
+            background-color: #0056b3;
+        }
+        .register-link {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .register-link a {
+            color: #0069d9;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
         }
         footer {
-        background-color: #f5f5f5;
-        padding: 20px;
-        border-top: 1px solid #ddd;
-        margin-top: 50px;
-        clear: both;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            margin-top: 50px;
         }
-
         .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
         }
-
         .footer-left {
-        font-size: 14px;
-        color: #666;
+            font-size: 14px;
+            color: #666;
         }
-
         .footer-right ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: space-between;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
         }
-
         .footer-right li {
-        margin-right: 20px;
+            margin-right: 20px;
         }
-
         .footer-right a {
-        color: #337ab7;
-        text-decoration: none;
+            color: #337ab7;
+            text-decoration: none;
         }
-
         .footer-right a:hover {
-        color: #23527c;
+            color: #23527c;
+        }
+        @media (max-width: 767.98px) {
+            .login-img {
+                display: none;
+            }
+            .login-form {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="techgenius-academy-unlock-your-potential-empower-your-future">
-        <span style="font-family: Orbitron, sans-serif; font-weight: 900; color: rgba(0, 123, 255, 1);">
-            TECHGENIUS ACADEMY
-        </span>
-        <br />
-        
-        <span style="font-size: 24px; color: rgba(0,123,255,1);">
-                    Unlock Your Potential, Empower Your Future!
-        </span>
-    </div><br />
-    <!-- Bootstrap login form -->
-    <div class="container">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <span class="title">TECHGENIUS ACADEMY</span>
+        <span class="subtitle">Unlock Your Potential, Empower Your Future!</span>
+    </div>
+    <!-- Login Container -->
+    <div class="container login-container">
         <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">TechGenius Academy Login</h4>
-                        <form action="login.php" method="post">
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" class="form-control">
+            <div class="col-md-8">
+                <div class="card login-card">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 login-img">
+                            <!-- Background image is set in CSS -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="login-form">
+                                <h4>Login</h4>
+                                <form action="login.php" method="post">
+                                    <?php if (isset($error)) { echo '<p class="text-danger">' . $error . '</p>'; } ?>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" id="email" name="email" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password:</label>
+                                        <input type="password" id="password" name="password" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="role">Role:</label>
+                                        <select id="role" name="role" class="form-control" required>
+                                            <option value="admin">Admin</option>
+                                            <option value="teachers">Teacher</option>
+                                            <option value="students">Student</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-login btn-block">Login</button>
+                                    <div class="register-link">
+                                        <p>Don’t have an account? <a href="register.php">REGISTER</a></p>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label for="password">Password:</label>
-                                <input type="password" id="password" name="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="role">Role:</label>
-                                <select id="role" name="role" class="form-control">
-                                    <option value="admin">Admin</option>
-                                    <option value="teachers">Teacher</option>
-                                    <option value="students">Student</option>
-                                </select>
-                            </div></br>
-                            <button type="submit" class="btn btn-primary">Login</button>
-                            <div class="dont-have-an-account-register">
-                                <span style="color: rgba(0,123,255,1);">
-                                    Don’t have an account?
-                                </span>
-                                <br />
-                                <span style="font-style: italic; color: rgba(0,123,255,1);">
-                                    <a href="register.php">REGISTER</a>
-                                </span>
-                            </div>
-                        </form>
-                        <?php if (isset($error)) { echo '<p class="text-danger">' . $error . '</p>'; } ?>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div><br>
     </div>
+    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-left">
-            <p>&copy; 2023 School Management System</p>
+                <p>&copy; 2023 TechGenius Academy</p>
             </div>
             <div class="footer-right">
-            <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-                <li><a href="#">Terms of Use</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-            </ul>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
             </div>
         </div>
     </footer>
+    <!-- jQuery and Bootstrap JS (Required for the spinner and functionality) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Spinner Script -->
+    <script>
+        $(window).on('load', function() {
+            setTimeout(function() {
+                $('#spinner').addClass('hide');
+            }, 500); // Adjust the timeout as needed
+        });
+    </script>
 </body>
 </html>
+

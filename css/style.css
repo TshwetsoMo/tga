@@ -1,0 +1,363 @@
+/* Updated CSS for Landing Page */
+
+/* Root Variables */
+:root {
+    --primary: #0069d9; /* Blue */
+    --secondary: #ffc107; /* Gold */
+    --light: #f2f2f2; /* Light Gray */
+    --dark: #181d38; /* Dark Blue */
+}
+
+/* General Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .display-3, .section-title, .navbar-brand h2 {
+    font-family: 'Orbitron', sans-serif !important;
+}
+
+/* Spinner */
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Buttons */
+.btn {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    transition: .5s;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: var(--secondary);
+    border: none;
+    color: #000;
+}
+
+.btn-primary:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+.btn-outline-light {
+    color: #fff;
+    border-color: #fff;
+}
+
+.btn-outline-light:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: #000;
+}
+
+.btn-square, .btn-sm-square, .btn-lg-square {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    border-radius: 0px;
+}
+
+/* Navbar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100%;
+    background-color: rgba(0, 105, 217, 0.95);
+    border-right: 3px solid rgba(255, 193, 7, 0.8);
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.sidebar .navbar-brand h2 {
+    color: #fff;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    padding: 15px 20px;
+    font-weight: 500;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: rgba(255, 193, 7, 0.8);
+    color: #fff;
+}
+
+.sidebar .btn {
+    margin: 20px;
+}
+
+.sidebar .btn-primary {
+    background-color: var(--secondary);
+    border: none;
+    color: #000;
+}
+
+.sidebar .btn-primary:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 220px;
+    padding: 0;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* Carousel */
+.header-carousel .owl-nav .owl-prev,
+.header-carousel .owl-nav .owl-next {
+    color: #fff;
+    background: transparent;
+    border: 1px solid #fff;
+}
+
+.header-carousel .owl-nav .owl-prev:hover,
+.header-carousel .owl-nav .owl-next:hover {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: #000;
+}
+
+.header-carousel .text-primary {
+    color: var(--secondary) !important;
+}
+
+.header-carousel .btn-primary {
+    background-color: var(--secondary);
+    border: none;
+    color: #000;
+}
+
+.header-carousel .btn-primary:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+.header-carousel .btn-light {
+    background-color: #fff;
+    color: #000;
+}
+
+.header-carousel .btn-light:hover {
+    background-color: var(--secondary);
+    color: #000;
+}
+
+/* Section Titles */
+.section-title {
+    position: relative;
+    display: inline-block;
+    text-transform: uppercase;
+    color: var(--primary);
+}
+
+.section-title::before,
+.section-title::after {
+    background: var(--secondary);
+}
+
+/* Services */
+.service-item {
+    background: var(--light);
+    transition: .5s;
+    border-radius: 10px;
+}
+
+.service-item:hover {
+    margin-top: -10px;
+    background: var(--primary);
+    color: #fff;
+}
+
+.service-item i {
+    color: var(--primary);
+}
+
+.service-item:hover i {
+    color: #fff;
+}
+
+/* About Section */
+.bg-white.text-start.text-primary.pe-3 {
+    background: transparent !important;
+    color: var(--primary) !important;
+}
+
+.about .btn-primary {
+    background-color: var(--secondary);
+    border: none;
+    color: #000;
+}
+
+.about .btn-primary:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+/* Courses */
+.course-item {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.course-item .btn-primary {
+    background-color: var(--secondary);
+    border: none;
+    color: #000;
+}
+
+.course-item .btn-primary:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+/* Team */
+.team-item {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.team-item .btn-primary {
+    background-color: var(--secondary);
+    border: none;
+    color: #000;
+}
+
+.team-item .btn-primary:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+/* Testimonial */
+.testimonial-item .bg-light {
+    background-color: var(--light) !important;
+}
+
+.testimonial-item .text-primary {
+    color: var(--primary) !important;
+}
+
+/* Footer */
+.footer {
+    background-color: rgba(0, 105, 217, 0.95);
+    color: #fff;
+}
+
+.footer a {
+    color: #ffc107;
+}
+
+.footer a:hover {
+    color: #e0a800;
+}
+
+.footer .btn-outline-light {
+    border-color: #fff;
+}
+
+.footer .btn-outline-light:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: #000;
+}
+
+.footer .btn.btn-link {
+    color: #fff;
+}
+
+.footer .btn.btn-link:hover {
+    color: var(--secondary);
+}
+
+.footer .copyright {
+    border-top: 1px solid rgba(256, 256, 256, .1);
+}
+
+/* Back to Top Button */
+.back-to-top {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.back-to-top:hover {
+    background-color: var(--secondary);
+    color: #000;
+}
+
+/* Miscellaneous */
+.btn-square, .btn-sm-square, .btn-lg-square {
+    border-radius: 50%;
+}
+
+.owl-carousel .owl-nav .owl-prev,
+.owl-carousel .owl-nav .owl-next {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.owl-carousel .owl-nav .owl-prev:hover,
+.owl-carousel .owl-nav .owl-next:hover {
+    background-color: var(--secondary);
+    color: #000;
+}
+
+.bg-light {
+    background-color: var(--light) !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.text-secondary {
+    color: var(--secondary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary) !important;
+}
+
+.border-primary {
+    border-color: var(--primary) !important;
+}
+
+.border-secondary {
+    border-color: var(--secondary) !important;
+}

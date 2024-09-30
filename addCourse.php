@@ -19,20 +19,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// // Check if the teacher exists
-// $teacherStmt = $mysqli->prepare("SELECT * FROM teachers WHERE teacherID = ?");
-// $teacherStmt->bind_param("i", $teacherID);
-// $teacherStmt->execute();
-// $teacherResult = $teacherStmt->get_result();
-
-// if ($teacherResult->num_rows > 0) {
-//     // Teacher exists, proceed with inserting the course
-//     $stmt->execute();
-// } else {
-//     // Teacher doesn't exist, handle the error
-//     echo "Error: Teacher with ID $teacherID does not exist.";
-// }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add the course to the database
     $course_name = $_POST['courseName'];
@@ -43,37 +29,112 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $query = "INSERT INTO courses (courseName, courseCode, credits, department, teacherID) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("siisi", $course_name, $course_code, $credits, $department, $teacherID);
+    $stmt->bind_param("ssisi", $course_name, $course_code, $credits, $department, $teacherID);
     $stmt->execute();
 
-    echo "<p>Course added successfully!</p>";
+    // Redirect to admin home after successful addition
     header('Location: adminhome.php');
     exit;
 }
-
-// Display the form to add a course
-echo "<h2>Add Course</h2>";
-echo "<form action='addCourse.php' method='post'>";
-echo "<div class='form-group'>";
-echo "<label for='courseName'>Course Name:</label>";
-echo "<input type='text' class='form-control' id='courseName' name='courseName' required>";
-echo "</div>";
-echo "<div class='form-group'>";
-echo "<label for='courseCode'>Course Code:</label>";
-echo "<input type='number' class='form-control' id='courseCode' name='courseCode' required>";
-echo "</div>";
-echo "<div class='form-group'>";
-echo "<label for='credits'>Credits:</label>";
-echo "<input type='number' class='form-control' id='credits' name='credits' required>";
-echo "</div>";
-echo "<div class='form-group'>";
-echo "<label for='department'>Department:</label>";
-echo "<input type='text' class='form-control' id='department' name='department' required>";
-echo "</div>";
-echo "<div class='form-group'>";
-echo "<label for='teacherID'>Teacher ID:</label>";
-echo "<input type='number' class='form-control' id='teacherID' name='teacherID' required>";
-echo "</div>";
-echo "<button type='submit' class='btn btn-primary'>Add Course</button>";
-echo "</form>";
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Course - TechGenius Academy</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #0069d9;
+            background-image: url('your-background-image.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: #000;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            background-color: #fff;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .btn-submit {
+            background-color: #ffc107;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 20px;
+            padding: 10px 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
+            background-color: #e0a800;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #ffc107;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link a:hover {
+            color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Course</h2>
+        <form action="addCourse.php" method="post">
+            <label for="courseName">Course Name:</label>
+            <input type="text" class="form-control" id="courseName" name="courseName" required>
+
+            <label for="courseCode">Course Code:</label>
+            <input type="text" class="form-control" id="courseCode" name="courseCode" required>
+
+            <label for="credits">Credits:</label>
+            <input type="number" class="form-control" id="credits" name="credits" required>
+
+            <label for="department">Department:</label>
+            <input type="text" class="form-control" id="department" name="department" required>
+
+            <label for="teacherID">Teacher ID:</label>
+            <input type="number" class="form-control" id="teacherID" name="teacherID" required>
+
+            <button type="submit" class="btn btn-submit">Add Course</button>
+        </form>
+        <div class="back-link">
+            <a href="adminhome.php">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

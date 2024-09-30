@@ -39,49 +39,110 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
-    <title>Add Teacher</title>
+    <title>Add Teacher - TechGenius Academy</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #0069d9;
+            background-image: url('your-background-image.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: #000;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            background-color: #fff;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .btn-submit {
+            background-color: #ffc107;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 20px;
+            padding: 10px 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
+            background-color: #e0a800;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #ffc107;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link a:hover {
+            color: #e0a800;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h2>Add Teacher</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="teacherName">Teacher Name:</label>
-                <input type="text" class="form-control" id="teacherName" name="teacherName" required>
-            </div>
-            <div class="form-group">
-                <label for="teacherSurname">Teacher Surname:</label>
-                <input type="text" class="form-control" id="teacherSurname" name="teacherSurname" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="hireDate">Hire Date:</label>
-                <input type="date" class="form-control" id="hireDate" name="hireDate" required>
-            </div>
-            <div class="form-group">
-                <label for="department">Department:</label>
-                <input type="text" class="form-control" id="department" name="department" required>
-            </div>
-            <div class="form-group">
-                <label for="role">Role:</label>
-                <input type="text" class="form-control" id="role" name="role" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Teacher</button>
+            <label for="teacherName">Teacher Name:</label>
+            <input type="text" class="form-control" id="teacherName" name="teacherName" required>
+
+            <label for="teacherSurname">Teacher Surname:</label>
+            <input type="text" class="form-control" id="teacherSurname" name="teacherSurname" required>
+
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+
+            <label for="hireDate">Hire Date:</label>
+            <input type="date" class="form-control" id="hireDate" name="hireDate" required>
+
+            <label for="department">Department:</label>
+            <input type="text" class="form-control" id="department" name="department" required>
+
+            <label for="role">Role:</label>
+            <input type="text" class="form-control" id="role" name="role" required>
+
+            <button type="submit" class="btn btn-submit">Add Teacher</button>
         </form>
+        <div class="back-link">
+            <a href="adminhome.php">Back to Dashboard</a>
+        </div>
     </div>
 </body>
 </html>
