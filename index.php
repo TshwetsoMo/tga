@@ -462,7 +462,7 @@ h1, h2, h3, h4, h5, h6, .display-3, .section-title, .navbar-brand h2 {
              <div class="owl-carousel header-carousel position-relative">
                  <!-- Carousel Item 1 -->
                 <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="https://t4.ftcdn.net/jpg/02/00/14/63/360_F_200146338_NTWg7HF65p5z6IUIXzxJbkJ5zlEt3gnG.jpg" alt="TechGenius Academy">
+                <img class="img-fluid" style="height: 780px" src="https://t4.ftcdn.net/jpg/02/00/14/63/360_F_200146338_NTWg7HF65p5z6IUIXzxJbkJ5zlEt3gnG.jpg" alt="TechGenius Academy">
                     <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                         <div class="container">
                             <div class="row justify-content-start">
@@ -478,7 +478,7 @@ h1, h2, h3, h4, h5, h6, .display-3, .section-title, .navbar-brand h2 {
                     </div>
                 </div>
                  <div class="owl-carousel-item position-relative">
-                     <img class="img-fluid" style="height: 614px" src="https://media.istockphoto.com/id/1406888053/photo/a-group-of-cheerful-people-at-graduation-holding-diplomas-or-certificates-up-together-and.jpg?s=612x612&w=0&k=20&c=8LRkx77cpb1clqj2tHqOY--uO8Mj6DB8Qd1Y3RdDRyQ=" alt="">
+                     <img class="img-fluid" style="height: 780px" src="https://media.istockphoto.com/id/1406888053/photo/a-group-of-cheerful-people-at-graduation-holding-diplomas-or-certificates-up-together-and.jpg?s=612x612&w=0&k=20&c=8LRkx77cpb1clqj2tHqOY--uO8Mj6DB8Qd1Y3RdDRyQ=" alt="">
                      <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                          <div class="container">
                              <div class="row justify-content-start">

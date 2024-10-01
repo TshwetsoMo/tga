@@ -20,8 +20,11 @@ if ($conn->connect_error) {
 }
 
 // Get the admin's name from the database
-$query = "SELECT adminName FROM admin WHERE email = '" . $_SESSION['email'] . "'";
-$result = $conn->query($query);
+$query = "SELECT adminName FROM admin WHERE email = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $_SESSION['email']);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result) {
     $row = $result->fetch_assoc();
     $admin_name = $row['adminName'];
@@ -43,6 +46,21 @@ if ($result) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <!-- Custom CSS -->
     <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+            background-color: rgba(255, 255, 255, 0.4);
+            /* Background Image */
+            background-image: url('https://wallpapers.com/images/hd/anime-school-scenery-empty-classroom-oemz67vnyqdihizw.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-blend-mode: overlay;
+        }
         /* Spinner Styles */
         #spinner {
             position: fixed;
@@ -69,28 +87,6 @@ if ($result) {
             width: 3rem;
             height: 3rem;
         }
-
-        /* Custom CSS */
-        body {
-            background-color: #f2f2f2;
-            font-family: 'Roboto', sans-serif;
-        }
-        .header{
-            color: #ffc107;
-        }
-        .school-name {
-            color: #007bff;
-            text-align: center;
-            font: 700 48px 'Orbitron', sans-serif;
-            margin-top: 20px;
-        }
-        .subtitle {
-            font-size: 24px;
-            color: #007bff;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        /* Sidebar Styles */
         .sidebar {
             position: fixed;
             top: 0;
@@ -155,65 +151,135 @@ if ($result) {
             color: rgba(255, 193, 7, 0.8);
         }
 
-        /* Main Content Styles */
+        /* Main content area */
         .main-content {
-            margin-left: 240px;
+            margin-left: 220px;
             padding: 20px;
         }
-
-        .card {
+        .header-banner {
+            width: 100%;
+            text-align: center;
+            background-color: #0069d9;
+            color: #fff;
+            padding: 20px 0;
             margin-bottom: 20px;
         }
-
-        .card-header h2 {
+        .header-banner .title {
+            font-size: 36px;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
             margin: 0;
         }
-
-        .table th, .table td {
+        .header-banner .subtitle {
+            font-size: 24px;
+            margin: 0;
+        }
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 30px;
+            color: rgba(255, 193, 7, 0.8);
+        }
+        .welcome-message h1 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        /* Cards */
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .card-header h2 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .table thead th {
+            background-color: #0069d9;
+            color: #fff;
+            text-align: center;
+        }
+        .table tbody td {
             vertical-align: middle;
         }
-
-        .btn-sm {
-            margin-right: 5px;
+        .table tbody tr:hover {
+            background-color: #f2f2f2;
         }
-
-        footer {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-top: 1px solid #ddd;
-            margin-top: 50px;
+        .btn-primary, .btn-warning, .btn-danger {
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
         }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
+        .btn-primary {
+            background-color: #ffc107;
+            color: #000;
+            font-weight: bold;
         }
-
-        .footer-left {
-            font-size: 14px;
-            color: #666;
+        .btn-primary:hover {
+            background-color: #e0a800;
+            color: #000;
         }
-
-        .footer-right ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
+        .btn-warning {
+            background-color: #fd7e14;
+            color: #fff;
         }
-
-        .footer-right li {
-            margin-right: 20px;
+        .btn-warning:hover {
+            background-color: #e66900;
+            color: #fff;
         }
-
-        .footer-right a {
-            color: #337ab7;
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            color: #fff;
+        }
+        .btn a {
+            color: inherit;
             text-decoration: none;
         }
-
-        .footer-right a:hover {
-            color: #23527c;
+        .btn a:hover {
+            color: inherit;
+        }
+        /* Footer */
+        footer {
+            background-color: #0069d9;
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #e0a800;
+        }
+        footer .footer-logo {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        footer .footer-logo img {
+            width: 50px;
+            height: 50px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            footer .footer-logo {
+                position: static;
+                transform: none;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -225,7 +291,6 @@ if ($result) {
         </div>
     </div>
     <!-- Spinner End -->
-
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="school-logo">
@@ -236,13 +301,13 @@ if ($result) {
                 <a class="nav-link active" href="adminhome.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a>
+                <a class="nav-link" href="manageTeachers.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-user-graduate"></i> Manage Students</a>
+                <a class="nav-link" href="manageStudents.php"><i class="fas fa-user-graduate"></i> Manage Students</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-book"></i> Manage Courses</a>
+                <a class="nav-link" href="manageCourses.php"><i class="fas fa-book"></i> Manage Courses</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="announcements.php"><i class="fas fa-bullhorn"></i> Announcements</a>
@@ -252,13 +317,17 @@ if ($result) {
             <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </div>
+    <!-- Sidebar End -->
     <!-- Main Content -->
     <div class="main-content">
-        <div class="school-name">TECHGENIUS ACADEMY</div>
-        <div class="subtitle">Unlock Your Potential, Empower Your Future!</div>
-        <!-- Header with welcome message -->
-        <div class="header">
-            <h1>Welcome, <?php echo $admin_name; ?> (Admin)</h1>
+        <!-- Header Banner -->
+        <div class="header-banner">
+            <span class="title">TECHGENIUS ACADEMY</span><br>
+            <span class="subtitle">Unlock Your Potential, Empower Your Future!</span>
+        </div>
+        <!-- Welcome Message -->
+        <div class="welcome-message">
+            <h1>Welcome, <?php echo htmlspecialchars($admin_name); ?> (Admin)</h1>
         </div>
         <!-- Teachers Section -->
         <div class="card">
@@ -266,7 +335,7 @@ if ($result) {
                 <h2>Teachers</h2>
             </div>
             <div class="card-body">
-                <table class="table table-striped table-hover">
+                <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>Teacher ID</th>
@@ -286,15 +355,15 @@ if ($result) {
                         $result = $conn->query($query);
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
-                            echo "<td>" . $row["teacherID"] . "</td>";
-                            echo "<td>" . $row["teacherName"] . "</td>";
-                            echo "<td>" . $row["teacherSurname"] . "</td>";
-                            echo "<td>" . $row["email"] . "</td>";
-                            echo "<td>" . $row["hireDate"] . "</td>";
-                            echo "<td>" . $row["department"] . "</td>";
-                            echo "<td>" . $row["role"] . "</td>";
+                            echo "<td>" . htmlspecialchars($row["teacherID"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["teacherName"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["teacherSurname"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["email"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["hireDate"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["department"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["role"]) . "</td>";
                             echo "<td>";
-                            echo "<a href='updateTeacher.php?teacherID=" . $row['teacherID'] . "' class='btn btn-sm btn-warning'>Update</a>";
+                            echo "<a href='updateTeacher.php?teacherID=" . $row['teacherID'] . "' class='btn btn-sm btn-warning'>Update</a> ";
                             echo "<a href='deleteTeacher.php?teacherID=" . $row['teacherID'] . "' class='btn btn-sm btn-danger'>Delete</a>";
                             echo "</td>";
                             echo "</tr>";
@@ -311,12 +380,15 @@ if ($result) {
                 <h2>Students</h2>
             </div>
             <div class="card-body">
-                <table class="table table-striped table-hover">
+                <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>Student ID</th>
                             <th>Name</th>
+                            <th>Surname</th>
                             <th>Email</th>
+                            <th>Enrollment Date</th>
+                            <th>Major</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -327,11 +399,13 @@ if ($result) {
                         $result = $conn->query($query);
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
-                            echo "<td>" . $row['studentID'] . "</td>";
-                            echo "<td>" . $row['studentName'] . "</td>";
-                            echo "<td>" . $row['email'] . "</td>";
+                            echo "<td>" . htmlspecialchars($row['studentID']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['studentName']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['studentSurname']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['enrollmentDate']) . "</td>";
                             echo "<td>";
-                            echo "<a href='updateStudent.php?studentID=" . $row['studentID'] . "' class='btn btn-sm btn-warning'>Update</a>";
+                            echo "<a href='updateStudent.php?studentID=" . $row['studentID'] . "' class='btn btn-sm btn-warning'>Update</a> ";
                             echo "<a href='deleteStudent.php?studentID=" . $row['studentID'] . "' class='btn btn-sm btn-danger'>Delete</a>";
                             echo "</td>";
                             echo "</tr>";
@@ -348,12 +422,14 @@ if ($result) {
                 <h2>Courses</h2>
             </div>
             <div class="card-body">
-                <table class="table table-striped table-hover">
+                <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>Course ID</th>
                             <th>Name</th>
                             <th>Code</th>
+                            <th>Description</th>
+                            <th>Credits</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -364,11 +440,11 @@ if ($result) {
                         $result = $conn->query($query);
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
-                            echo "<td>" . $row['courseID'] . "</td>";
-                            echo "<td>" . $row['courseName'] . "</td>";
-                            echo "<td>" . $row['courseCode'] . "</td>";
+                            echo "<td>" . htmlspecialchars($row['courseID']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['courseName']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['courseCode']) . "</td>";
                             echo "<td>";
-                            echo "<a href='updateCourse.php?courseID=" . $row['courseID'] . "' class='btn btn-sm btn-warning'>Update</a>";
+                            echo "<a href='updateCourse.php?courseID=" . $row['courseID'] . "' class='btn btn-sm btn-warning'>Update</a> ";
                             echo "<a href='deleteCourse.php?courseID=" . $row['courseID'] . "' class='btn btn-sm btn-danger'>Delete</a>";
                             echo "</td>";
                             echo "</tr>";
@@ -377,7 +453,7 @@ if ($result) {
                             $message = $_GET['message'];
                             ?>
                             <script>
-                                alert("<?php echo $message; ?>");
+                                alert("<?php echo htmlspecialchars($message); ?>");
                             </script>
                             <?php
                         }
@@ -399,9 +475,9 @@ if ($result) {
                 $result = $conn->query($query);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<p><strong>" . $row['title'] . "</strong><br>";
-                        echo $row['description'] . "<br>";
-                        echo "<small>Posted on: " . $row['postedDate'] . "</small></p><hr>";
+                        echo "<p><strong>" . htmlspecialchars($row['title']) . "</strong><br>";
+                        echo htmlspecialchars($row['description']) . "<br>";
+                        echo "<small>Posted on: " . htmlspecialchars($row['postedDate']) . "</small></p><hr>";
                     }
                 } else {
                     echo "<p>There are no announcements at this time.</p>";
@@ -410,23 +486,16 @@ if ($result) {
                 <a href="addAnnouncement.php" class="btn btn-primary mt-3">Add Announcement</a>
             </div>
         </div>
+        <!-- Footer -->
+        <footer>
+            <!-- Small School Logo -->
+            <div class="footer-logo">
+                <img src="logo.png" alt="School Logo">
+            </div>
+            <p>&copy; 2023 TechGenius Academy | <a href="#">About Us</a> | <a href="#">Contact Us</a> | <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a></p>
+        </footer>
     </div>
-    <!-- Footer -->
-    <footer style="width: 1050px; float: right; margin-right:20px; ">
-        <div class="footer-container">
-            <div class="footer-left">
-                <p>&copy; 2023 TechGenius Academy</p>
-            </div>
-            <div class="footer-right">
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    <!-- Main Content End -->
     <!-- jQuery and Bootstrap JS (Required for the spinner and functionality) -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Spinner Script -->
@@ -437,6 +506,6 @@ if ($result) {
             }, 500); // Adjust the timeout as needed
         });
     </script>
-
 </body>
 </html>
+

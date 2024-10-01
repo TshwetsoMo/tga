@@ -42,7 +42,7 @@ if (isset($teacher_id) && !empty($teacher_id)) {
         // Check if the assignment was added successfully
         if ($stmt->affected_rows > 0) {
             // Redirect to teachershome.php
-            header('Location: teacherhome.php');
+            header('Location: teachershome.php');
             exit;
         } else {
             $error_message = "Error adding assignment: " . $conn->error;

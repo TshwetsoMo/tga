@@ -47,7 +47,7 @@ if (isset($teacher_id) && !empty($teacher_id)) {
             // Check if the assignment was updated successfully
             if ($stmt->affected_rows > 0) {
                 // Redirect to teacherhome.php
-                header('Location: teacherhome.php');
+                header('Location: teachershome.php');
                 exit;
             } else {
                 $error_message = "Error updating assignment: " . $conn->error;

@@ -21,12 +21,17 @@ if ($conn->connect_error) {
 }
 
 // Retrieve the admin's name from the database
-$stmt = $conn->prepare("SELECT adminName FROM admin WHERE adminID = ?");
-$stmt->bind_param("i", $_SESSION['adminID']);
-$stmt->execute();
-$result = $stmt->get_result();
-$admin = $result->fetch_assoc();
-$adminName = $admin['adminName'];
+if (isset($_SESSION['adminID'])) {
+    $stmt = $conn->prepare("SELECT adminName FROM admin WHERE adminID = ?");
+    $stmt->bind_param("i", $_SESSION['adminID']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $admin = $result->fetch_assoc();
+    $adminName = $admin['adminName'];
+} else {
+    echo "Error: adminID is not set in the session.";
+    exit;
+}
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -34,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $description = $_POST['description'];
 
     // Insert announcement into database
-    $query = "INSERT INTO announcements (title, description, postedDate) VALUES (?, ?, NOW())";
+    $query = "INSERT INTO announcements (title, description, postedDate, postedBy) VALUES (?, ?, NOW(), ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ss", $title, $description);
+    $stmt->bind_param("sss", $title, $description, $adminName);
     $stmt->execute();
 
     // Redirect to same page to display new announcement
@@ -65,9 +70,20 @@ while ($row = $result->fetch_assoc()) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <!-- Custom CSS -->
     <style>
-        body {
-            background-color: #f2f2f2;
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+            background-color: rgba(255, 255, 255, 0.4);
+            /* Background Image */
+            background-image: url('https://wallpapers.com/images/hd/anime-school-scenery-empty-classroom-oemz67vnyqdihizw.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-blend-mode: overlay;
         }
         /* Spinner Styles */
         #spinner {
@@ -151,65 +167,98 @@ while ($row = $result->fetch_assoc()) {
         }
         /* Main Content Styles */
         .main-content {
-            margin-left: 240px;
+            margin-left: 220px;
             padding: 20px;
         }
-        .school-name {
-            color: #007bff;
+        .header-banner {
+            width: 100%;
             text-align: center;
-            font: 700 48px 'Orbitron', sans-serif;
-            margin-top: 20px;
+            background-color: #0069d9;
+            color: #fff;
+            padding: 20px 0;
+            margin-bottom: 20px;
         }
-        .subtitle {
+        .header-banner .title {
+            font-size: 36px;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+        }
+        .header-banner .subtitle {
             font-size: 24px;
-            color: #007bff;
-            text-align: center;
-            margin-bottom: 20px;
+            margin: 0;
         }
-        .header h1 {
-            margin-bottom: 20px;
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: rgba(255, 193, 7, 0.8);
+        }
+        .page-title h1 {
+            font-family: 'Orbitron', sans-serif;
         }
         .card {
             margin-bottom: 20px;
         }
         .btn-primary {
-            background-color: #0069d9;
+            background-color: #ffc107;
             border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 20px;
         }
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #e0a800;
+            color: #000;
         }
+        /* Table Styles */
+        table {
+            background-color: #fff;
+        }
+        table th {
+            background-color: #0069d9;
+            color: #fff;
+        }
+        /* Footer */
         footer {
-            background-color: #f5f5f5;
+            background-color: #0069d9;
             padding: 20px;
-            border-top: 1px solid #ddd;
-            margin-top: 50px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            margin-top: 20px;
         }
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-        }
-        .footer-left {
-            font-size: 14px;
-            color: #666;
-        }
-        .footer-right ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        .footer-right li {
-            margin-right: 20px;
-        }
-        .footer-right a {
-            color: #337ab7;
+        footer a {
+            color: #ffc107;
             text-decoration: none;
         }
-        .footer-right a:hover {
-            color: #23527c;
+        footer a:hover {
+            color: #e0a800;
+        }
+        footer .footer-logo {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        footer .footer-logo img {
+            width: 50px;
+            height: 50px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            footer .footer-logo {
+                position: static;
+                transform: none;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -232,13 +281,13 @@ while ($row = $result->fetch_assoc()) {
                 <a class="nav-link" href="adminhome.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a>
+                <a class="nav-link" href="manageTeachers.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-user-graduate"></i> Manage Students</a>
+                <a class="nav-link" href="manageStudents.php"><i class="fas fa-user-graduate"></i> Manage Students</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-book"></i> Manage Courses</a>
+                <a class="nav-link" href="manageCourses.php"><i class="fas fa-book"></i> Manage Courses</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="announcements.php"><i class="fas fa-bullhorn"></i> Announcements</a>
@@ -248,10 +297,19 @@ while ($row = $result->fetch_assoc()) {
             <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </div>
+    <!-- Sidebar End -->
+
     <!-- Main Content -->
     <div class="main-content">
-        <div class="school-name">TECHGENIUS ACADEMY</div>
-        <div class="subtitle">Unlock Your Potential, Empower Your Future!</div>
+        <!-- Header Banner -->
+        <div class="header-banner">
+            <span class="title">TECHGENIUS ACADEMY</span><br>
+            <span class="subtitle">Unlock Your Potential, Empower Your Future!</span>
+        </div>
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Announcements</h1>
+        </div>
         <!-- Announcement Form -->
         <div class="card">
             <div class="card-header">
@@ -262,7 +320,7 @@ while ($row = $result->fetch_assoc()) {
                     <div class="form-group">
                         <label for="title">Title:</label>
                         <input type="text" id="title" name="title" class="form-control" required>
-                    </div>
+                    </div><br>
                     <div class="form-group">
                         <label for="description">Description:</label>
                         <textarea id="description" name="description" class="form-control" rows="5" required></textarea>
@@ -278,21 +336,23 @@ while ($row = $result->fetch_assoc()) {
             </div>
             <div class="card-body">
                 <?php if (count($announcements) > 0) { ?>
-                    <table class="table table-striped table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>Title</th>
                                 <th>Date Posted</th>
                                 <th>Description</th>
+                                <th>Posted By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($announcements as $announcement) { ?>
                                 <tr>
-                                    <td><?php echo $announcement['title']; ?></td>
-                                    <td><?php echo $announcement['postedDate']; ?></td>
-                                    <td><?php echo $announcement['description']; ?></td>
+                                    <td><?php echo htmlspecialchars($announcement['title']); ?></td>
+                                    <td><?php echo htmlspecialchars($announcement['postedDate']); ?></td>
+                                    <td><?php echo htmlspecialchars($announcement['description']); ?></td>
+                                    <td><?php echo htmlspecialchars($announcement['postedBy']); ?></td>
                                     <td>
                                         <a href="deleteAnnouncement.php?announcementID=<?php echo $announcement['announcementID']; ?>" class="btn btn-sm btn-danger">Delete</a>
                                     </td>
@@ -307,21 +367,14 @@ while ($row = $result->fetch_assoc()) {
         </div>
     </div>
     <!-- Footer -->
-    <footer style="width: 1050px; float: right; margin-right:20px">
-        <div class="footer-container">
-            <div class="footer-left">
-                <p>&copy; 2023 TechGenius Academy</p>
-            </div>
-            <div class="footer-right">
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
+    <footer>
+        <!-- Small School Logo -->
+        <div class="footer-logo">
+            <img src="logo.png" alt="School Logo">
         </div>
+        <p>&copy; 2023 TechGenius Academy | <a href="#">About Us</a> | <a href="#">Contact Us</a> | <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a></p>
     </footer>
+    <!-- Main Content End -->
     <!-- jQuery and Bootstrap JS (Required for the spinner and functionality) -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Spinner Script -->
