@@ -196,13 +196,11 @@ stipulate functionality and improvements that can be implemented in the future.
 
 <!-- TODO Change this -->
 
-![image4](./images/admin1.png)
-![image5](./images/admin3.png)
-![image6](./images/admin%20addAnnouncement.png)
-![image7](./images/login%20page.png)
-![image8](./images/admin%20addTeacher.png)
-![image9](./images/student1.png)
-![image10](./images/teacher1.png)
+![image4](./images/new/iMac%2024%20inch.png)
+![image6](./images/new/Mac%20Studio.png)
+![image7](./images/new/Monitor%20XDR-1.png)
+![image8](./images/new/Monitor%20XDR.png)
+![image9](./images/new/ZenBook%20Duo%2014.png)
 <br>
 
 <!-- VIDEO DEMONSTRATION -->
@@ -233,7 +231,7 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 
 ## Contact
 
-**Tsebo Ramonyalioa** - [Personal email](tshwetsomokgatlhe@gmail.com)[School Email](221411@virtualwindow.co.za) - [GitHub](https://github.com/TshwetsoMo)
+**Tshwetso Mokgatlhe** - [Personal email](tshwetsomokgatlhe@gmail.com)[School Email](221411@virtualwindow.co.za) - [GitHub](https://github.com/TshwetsoMo)
 
 - **Project Link** - https://github.com/TshwetsoMo/tga.git
 
